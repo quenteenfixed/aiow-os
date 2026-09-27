@@ -315,13 +315,27 @@ async def list_order_items(db: AsyncSession, business_id: int, order_uuid: str) 
     return [_order_item_dict(i) for i in result.scalars()]
 
 
+# ===== 确认订单 =====
+async def confirm_order(
+    db: AsyncSession, business_id: int, user_id: int, order_uuid: str
+) -> Order:
+    """确认订单：pending → confirmed"""
+    order = await _get_order_by_uuid(db, business_id, order_uuid, for_update=True)
+    if order.status != "pending":
+        raise ConflictException(f"当前订单状态({order.status})不允许确认")
+    order.status = "confirmed"
+    await db.commit()
+    await db.refresh(order)
+    return order
+
+
 # ===== 支付 =====
 async def pay_order(
     db: AsyncSession, business_id: int, user_id: int, order_uuid: str, req
 ) -> Order:
-    """支付订单：pending → paid"""
+    """支付订单：pending/confirmed → paid"""
     order = await _get_order_by_uuid(db, business_id, order_uuid, for_update=True)
-    if order.status != "pending":
+    if order.status not in ("pending", "confirmed"):
         raise ConflictException(f"当前订单状态({order.status})不允许支付")
     order.status = "paid"
     order.payment_status = "paid"
@@ -337,9 +351,9 @@ async def pay_order(
 async def cancel_order(
     db: AsyncSession, business_id: int, user_id: int, order_uuid: str, reason: str
 ) -> Order:
-    """取消订单：pending/paid → cancelled，回滚库存"""
+    """取消订单：pending/confirmed/paid → cancelled，回滚库存"""
     order = await _get_order_by_uuid(db, business_id, order_uuid, for_update=True)
-    if order.status not in ("pending", "paid"):
+    if order.status not in ("pending", "confirmed", "paid"):
         raise ConflictException(f"当前订单状态({order.status})不允许取消")
 
     # 查订单明细，回滚库存

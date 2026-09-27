@@ -1,7 +1,7 @@
 """商品与 SKU 服务层"""
 from decimal import Decimal
 from typing import List, Optional, Tuple
-from uuid import UUID
+from uuid import UUID, uuid4
 
 from sqlalchemy import func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -389,6 +389,47 @@ async def update_sku(
         raise ValidationException("至少需要提供一个更新字段")
     await db.commit()
     await db.refresh(sku)
+    return sku
+
+
+async def create_sku(
+    db: AsyncSession, business_id: int, product_uuid: str, req
+) -> SKU:
+    """为商品新增 SKU"""
+    product = await _get_product_by_uuid(db, business_id, product_uuid)
+    # 校验 sku_code 唯一
+    if req.sku_code:
+        existing = await db.execute(
+            select(SKU.id).where(SKU.sku_code == req.sku_code)
+        )
+        if existing.first() is not None:
+            raise ConflictException(f"SKU 编码 {req.sku_code} 已存在")
+    else:
+        req.sku_code = f"DEFAULT-{uuid4().hex[:12].upper()}"
+
+    sku = SKU(
+        product_id=product.id,
+        business_id=product.business_id,
+        sku_code=req.sku_code,
+        spec_name=req.spec_name or "默认规格",
+        price=req.price if req.price is not None else Decimal("0"),
+        cost_price=req.cost_price,
+        original_price=req.original_price,
+        barcode=req.barcode,
+        weight=req.weight,
+        image=req.image,
+        safety_stock=req.safety_stock or 0,
+        min_stock=req.min_stock or 0,
+        status=req.status or "active",
+    )
+    db.add(sku)
+    await db.commit()
+    await db.refresh(sku)
+    # 同步商品 SKU 数量
+    product.sku_count = await db.scalar(
+        select(func.count(SKU.id)).where(SKU.product_id == product.id, SKU.deleted_at.is_(None))
+    ) or 0
+    await db.commit()
     return sku
 
 

@@ -15,6 +15,7 @@ from app.schemas.order import (
 from app.services.order_service import (
     cancel_order,
     complete_order,
+    confirm_order,
     create_order,
     get_order_detail,
     get_order_stats,
@@ -104,6 +105,19 @@ async def get_order_api(
 ):
     """订单详情"""
     data = await get_order_detail(db, user.business_id, order_id)
+    return success_response(data, request_id=request.state.request_id)
+
+
+@router.post("/{order_id}/confirm", response_model=None)
+async def confirm_api(
+    order_id: str,
+    request: Request,
+    user: CurrentUser = Depends(require_permission("order:write")),
+    db: AsyncSession = Depends(get_db),
+):
+    """确认订单：pending → confirmed"""
+    order = await confirm_order(db, user.business_id, user.user_id, order_id)
+    data = await _order_dict(db, order, include_items=False)
     return success_response(data, request_id=request.state.request_id)
 
 

@@ -144,6 +144,24 @@ export default function OrderDetailPage() {
         </div>
       )}
 
+      {order.status === 'shipped' && (
+        <div className="bg-card border border-border rounded-lg p-5">
+          <h2 className="font-semibold mb-4">签收确认</h2>
+          <button onClick={() => handleAction('complete')} disabled={submitting}
+            className="px-4 py-2 rounded-md bg-success text-white hover:opacity-90 disabled:opacity-50">确认签收并完成订单</button>
+        </div>
+      )}
+
+      {(order.status === 'paid' || order.status === 'completed') && (
+        <div className="bg-card border border-border rounded-lg p-5">
+          <h2 className="font-semibold mb-4">售后</h2>
+          <div className="flex flex-wrap gap-2">
+            <button onClick={() => handleAction('refund', { refund_amount: order.payable_amount, refund_reason: '客户申请退款', refund_type: 'full' })} disabled={submitting}
+              className="px-4 py-2 rounded-md border border-border text-sm hover:bg-secondary disabled:opacity-50">全额退款</button>
+          </div>
+        </div>
+      )}
+
       {order.remark && (
         <div className="bg-card border border-border rounded-lg p-5">
           <h2 className="font-semibold mb-2">备注</h2>

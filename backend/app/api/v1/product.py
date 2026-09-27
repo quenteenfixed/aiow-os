@@ -15,12 +15,14 @@ from app.schemas.product import (
     ProductBatchImport,
     ProductCreate,
     ProductUpdate,
+    SKUCreate,
     SKUUpdate,
     UnpublishRequest,
 )
 from app.services.product_service import (
     batch_import,
     create_product,
+    create_sku,
     delete_product,
     get_product_detail,
     list_products,
@@ -100,6 +102,19 @@ async def list_skus_api(
     """获取商品 SKU 列表"""
     skus = await list_skus(db, user.business_id, product_id, status)
     return success_response(skus, request_id=request.state.request_id)
+
+
+@router.post("/{product_id}/skus", response_model=None)
+async def create_sku_api(
+    product_id: str,
+    req: SKUCreate,
+    request: Request,
+    user: CurrentUser = Depends(require_permission("product:write")),
+    db: AsyncSession = Depends(get_db),
+):
+    """为商品新增 SKU"""
+    sku = await create_sku(db, user.business_id, product_id, req)
+    return success_response(_sku_dict(sku), request_id=request.state.request_id)
 
 
 @router.get("/{product_id}", response_model=None)

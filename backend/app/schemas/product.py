@@ -23,7 +23,8 @@ class SKUBase(BaseModel):
 
 
 class SKUCreate(SKUBase):
-    pass
+    sku_code: Optional[str] = Field(None, max_length=64, description="SKU 编码，留空自动生成")
+    status: Optional[str] = Field("active", pattern="^(active|inactive)$")
 
 
 class SKUUpdate(BaseModel):

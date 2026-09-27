@@ -1,1 +1,4 @@
 /docs
+/logs
+logs/backend.log
+logs/frontend.log
