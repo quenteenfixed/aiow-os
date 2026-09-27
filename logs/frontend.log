@@ -1,0 +1,85 @@
+
+> frontend@0.1.0 dev
+> next dev --hostname 0.0.0.0 --port 3000
+
+▲ Next.js 16.3.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://0.0.0.0:3000
+- Environments: .env.local
+✓ Ready in 807ms
+✓ Running next.config.ts took 50ms
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead.
+
+  To migrate automatically, run:
+  npx @next/codemod@canary middleware-to-proxy .
+
+  Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+
+ GET / 200 in 2.0s (next.js: 1444ms, proxy.ts: 6ms, application-code: 581ms)
+ GET / 200 in 423ms (next.js: 295ms, proxy.ts: 28ms, application-code: 99ms)
+ GET /agents 200 in 125ms (next.js: 87ms, proxy.ts: 6ms, application-code: 32ms)
+ GET /agents/3/chat 200 in 1034ms (next.js: 984ms, proxy.ts: 4ms, application-code: 47ms)
+ GET /agents 200 in 91ms (next.js: 18ms, proxy.ts: 36ms, application-code: 37ms)
+ GET /agents/3 200 in 1197ms (next.js: 1168ms, proxy.ts: 4ms, application-code: 25ms)
+ GET /agents 200 in 26ms (next.js: 3ms, proxy.ts: 4ms, application-code: 19ms)
+ GET /agents/new 200 in 182ms (next.js: 155ms, proxy.ts: 4ms, application-code: 22ms)
+ GET /customers 200 in 143ms (next.js: 117ms, proxy.ts: 3ms, application-code: 23ms)
+ GET /orders 200 in 103ms (next.js: 81ms, proxy.ts: 2ms, application-code: 20ms)
+ GET /products 200 in 135ms (next.js: 87ms, proxy.ts: 2ms, application-code: 45ms)
+ GET /inventory 200 in 101ms (next.js: 76ms, proxy.ts: 3ms, application-code: 22ms)
+ GET /inventory/stocktake 200 in 855ms (next.js: 823ms, proxy.ts: 3ms, application-code: 29ms)
+[browser] ⨯ unhandledRejection: Error: SKU ID 格式错误
+    at request (src/lib/api.ts:99:9)
+    at async InventoryDetailPage.useEffect.fetchData (src/app/(dashboard)/inventory/[id]/page.tsx:20:22)
+   97 |   }
+   98 |
+>  99 |   throw new Error(json.message || '请求失败');
+      |         ^
+  100 | }
+  101 |
+  102 | // 便捷方法
+[browser] ⨯ unhandledRejection: Error: SKU ID 格式错误
+    at request (src/lib/api.ts:99:9)
+    at async InventoryDetailPage.useEffect.fetchData (src/app/(dashboard)/inventory/[id]/page.tsx:20:22)
+   97 |   }
+   98 |
+>  99 |   throw new Error(json.message || '请求失败');
+      |         ^
+  100 | }
+  101 |
+  102 | // 便捷方法
+ GET /inventory/6b412a63-075d-49ff-8fbc-f59ed91c5edf 200 in 40ms (next.js: 13ms, proxy.ts: 8ms, application-code: 19ms)
+ GET /inventory 200 in 74ms (next.js: 6ms, proxy.ts: 4ms, application-code: 64ms)
+ GET /orders 200 in 28ms (next.js: 6ms, proxy.ts: 2ms, application-code: 20ms)
+ GET /customers 200 in 36ms (next.js: 8ms, proxy.ts: 2ms, application-code: 26ms)
+ GET /agents 200 in 25ms (next.js: 5ms, proxy.ts: 3ms, application-code: 18ms)
+ GET /work-orders 200 in 134ms (next.js: 80ms, proxy.ts: 2ms, application-code: 52ms)
+ GET /work-orders/54 200 in 2.7s (next.js: 2.7s, proxy.ts: 3ms, application-code: 28ms)
+ GET /loops 200 in 90ms (next.js: 65ms, proxy.ts: 5ms, application-code: 21ms)
+ GET /loops/2 200 in 826ms (next.js: 800ms, proxy.ts: 2ms, application-code: 24ms)
+ GET /loops 200 in 71ms (next.js: 6ms, proxy.ts: 3ms, application-code: 62ms)
+ GET /loops/2 200 in 32ms (next.js: 8ms, proxy.ts: 3ms, application-code: 22ms)
+ GET /loops 200 in 56ms (next.js: 5ms, proxy.ts: 3ms, application-code: 48ms)
+ GET /loops 200 in 52ms (next.js: 3ms, proxy.ts: 5ms, application-code: 44ms)
+ GET /loops 200 in 47ms (next.js: 3ms, proxy.ts: 4ms, application-code: 40ms)
+ GET /memories 200 in 83ms (next.js: 51ms, proxy.ts: 4ms, application-code: 28ms)
+ GET /memories/49?agent_id=3 200 in 602ms (next.js: 575ms, proxy.ts: 2ms, application-code: 24ms)
+ GET /memories?agent_id=3 200 in 66ms (next.js: 10ms, proxy.ts: 2ms, application-code: 54ms)
+ GET /loops 200 in 33ms (next.js: 5ms, proxy.ts: 4ms, application-code: 24ms)
+ GET /alerts 200 in 76ms (next.js: 52ms, proxy.ts: 3ms, application-code: 21ms)
+ GET /alerts/4 200 in 936ms (next.js: 877ms, proxy.ts: 2ms, application-code: 57ms)
+ GET /work-orders 200 in 45ms (next.js: 22ms, proxy.ts: 3ms, application-code: 19ms)
+ GET /work-orders/54 200 in 87ms (next.js: 66ms, proxy.ts: 2ms, application-code: 19ms)
+ GET /work-orders 200 in 28ms (next.js: 6ms, proxy.ts: 4ms, application-code: 18ms)
+ GET /agents 200 in 50ms (next.js: 27ms, proxy.ts: 2ms, application-code: 21ms)
+ GET /customers 200 in 57ms (next.js: 33ms, proxy.ts: 2ms, application-code: 22ms)
+ GET / 200 in 45ms (next.js: 24ms, proxy.ts: 2ms, application-code: 19ms)
+ GET /products 200 in 56ms (next.js: 34ms, proxy.ts: 2ms, application-code: 19ms)
+ GET /inventory 200 in 45ms (next.js: 24ms, proxy.ts: 3ms, application-code: 19ms)
+ GET /inventory/adjust 200 in 63ms (next.js: 41ms, proxy.ts: 3ms, application-code: 20ms)
+ GET /inventory 200 in 23ms (next.js: 4ms, proxy.ts: 2ms, application-code: 17ms)
+ GET /inventory/adjust 200 in 31ms (next.js: 7ms, proxy.ts: 2ms, application-code: 22ms)
+ GET /orders 200 in 47ms (next.js: 16ms, proxy.ts: 6ms, application-code: 24ms)
+ GET /customers 200 in 29ms (next.js: 5ms, proxy.ts: 3ms, application-code: 21ms)
+ GET /agents 200 in 28ms (next.js: 8ms, proxy.ts: 2ms, application-code: 18ms)
+ GET /agents/3/chat 200 in 81ms (next.js: 53ms, proxy.ts: 5ms, application-code: 23ms)
